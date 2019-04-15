@@ -1,0 +1,15 @@
+{
+  "api": {
+    "api_url": "https://api.kik.com/v1",
+    "name": "yourBotName",
+    "key": "yourAPIKey"
+  },
+  "webhook": {
+    "host": "http://yourServerIP",
+    "port": "80",
+    "receiveReadReceipts": "true",
+    "receiveIsTyping": "false",
+    "manuallySendReadReceipts": "false",
+    "receiveDeliveryReceipts": "false"
+  }
+}
