@@ -18,52 +18,55 @@ public class HibernateUtil {
     }
 
     public static List<?> queryDatabase(String sql, Map<String, Object> params) {
-        final Session session = sessionFactory.isClosed() ? sessionFactory.openSession() : sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        try {
-            final Query query = session.createQuery(sql);
-            if (params != null) {
-                params.forEach(query::setParameter);
-            }
-            return query.list();
-        } finally {
-            session.getTransaction().commit();
+        final Session session = sessionFactory.getCurrentSession();
+        if(!session.getTransaction().isActive()) {
+            session.beginTransaction();
         }
-    }
-
-    public void rawQuery(String query) {
-        final Session session = sessionFactory.isClosed() ? sessionFactory.openSession() : sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query q = session.createQuery(query);
-        q.executeUpdate();
+        final Query query = session.createQuery(sql);
+        if (params != null) {
+            params.forEach(query::setParameter);
+        }
+        return query.list();
     }
 
     public static void save(Object obj) {
-        final Session session = sessionFactory.isClosed() ? sessionFactory.openSession() : sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        try {
-            session.save(obj);
-        } finally {
-            session.getTransaction().commit();
+        final Session session = sessionFactory.getCurrentSession();
+        if(!session.getTransaction().isActive()) {
+            session.beginTransaction();
+        }
+        session.saveOrUpdate(obj);
+    }
+
+    public static void save(List<?> list) {
+        final Session session = sessionFactory.getCurrentSession();
+        if(!session.getTransaction().isActive()) {
+            session.beginTransaction();
+        }
+        for(Object o : list) {
+            session.evict(o);
+            session.saveOrUpdate(o);
+            session.evict(o);
         }
     }
 
     public static void delete(Object obj) {
-        final Session session = sessionFactory.isClosed() ? sessionFactory.openSession() : sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        try {
-            session.delete(obj);
-        } finally {
-            session.getTransaction().commit();
+        final Session session = sessionFactory.getCurrentSession();
+        if(!session.getTransaction().isActive()) {
+            session.beginTransaction();
         }
+        session.evict(obj);
+        session.delete(obj);
+        session.evict(obj);
     }
 
     public static boolean open() {
         boolean success = false;
         try {
-            final Session session = sessionFactory.isClosed() ? sessionFactory.openSession() : sessionFactory.getCurrentSession();
+            final Session session = sessionFactory.getCurrentSession();
             if(null != session) {
-                session.beginTransaction();
+                if(!session.getTransaction().isActive()) {
+                    session.beginTransaction();
+                }
                 if(session.isOpen()) {
                     success = true;
                 }

@@ -13,17 +13,16 @@ public class ReadReceiptMessageHandler extends MessageHandler<ReadReceiptMessage
         final String timestamp = message.timestamp;
 
         if(!GroupUtils.groupExists(chatId)) {
-            L.info("Group not found: " + chatId);
             return null;
         }
 
-        //Check if member is already cached
         if(GroupUtils.memberExists(chatId, from)) {
             return null;
         }
 
         GroupUtils.addNewActiveMember(chatId, from);
         L.info("Added new member to group [chatId=" + chatId + "][member=" + from + "]");
+
         return null;
     }
 }

@@ -2,8 +2,10 @@ package sk96.dev.kik.bot;
 
 public final class MessageConstants {
     public static final String[] DISPLAY_COMMANDS = {
-            "Check Active",
-            "Check Inactive",
+            "Just Active",
+            "Just Inactive",
+            "Check",
+            "Reset",
             "Information",
             "Help",
     };

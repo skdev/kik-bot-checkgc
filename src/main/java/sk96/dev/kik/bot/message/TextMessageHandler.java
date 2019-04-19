@@ -25,6 +25,6 @@ public class TextMessageHandler extends MessageHandler<TextMessage> {
             return commands.get(received).run(message);
         }
 
-        return commands.get("lookup").run(message);
+        return new TextMessage(message.chatId, message.to, NEED_HELP);
     }
 }

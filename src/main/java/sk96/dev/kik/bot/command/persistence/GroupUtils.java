@@ -34,12 +34,6 @@ public class GroupUtils {
         return (Group) result.get(0);
     }
 
-    public static List<ActiveMember> getActiveMembers(String groupId) {
-        return (List<ActiveMember>)HibernateUtil.queryDatabase("from ActiveMember WHERE groupId=:groupId", new HashMap<String, Object>() {{
-            put("groupId", groupId);
-        }});
-    }
-
     public static List<GroupMember> getMembers(String groupId) {
         return (List<GroupMember>)HibernateUtil.queryDatabase("from GroupMember WHERE groupId=:groupId", new HashMap<String, Object>() {{
             put("groupId", groupId);
@@ -61,9 +55,10 @@ public class GroupUtils {
     }
 
     public static void addNewActiveMember(String chatId, String from) {
-        ActiveMember member = new ActiveMember();
+        GroupMember member = new GroupMember();
         member.setGroupId(chatId);
         member.setUsername(from);
+        member.setActive(1);
         HibernateUtil.save(member);
     }
 

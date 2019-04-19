@@ -2,7 +2,9 @@ package sk96.dev.kik.bot;
 
 import com.jayway.restassured.path.json.JsonPath;
 import io.vertx.core.Vertx;
+import sk96.dev.kik.bot.command.broadcast.Broadcast;
 import sk96.dev.kik.bot.command.broadcast.Chat;
+import sk96.dev.kik.bot.command.persistence.GroupUtils;
 import sk96.dev.kik.bot.command.persistence.HibernateUtil;
 import sk96.dev.kik.bot.message.MessageDecoder;
 import sk96.dev.kik.bot.message.WebhookMessage;
@@ -29,6 +31,35 @@ public final class Main {
     public static Configuration configuration;
 
     public static void main(String[] args) {
+        boolean testMode = false;
+
+
+        if(testMode) {
+            System.out.println("--TEST MODE--");
+
+
+            if(!HibernateUtil.open()) {
+                System.out.println("Connection to database failed.");
+                return;
+            }
+            System.out.println("Connection to database successful");
+
+
+            for(int i = 0; i < 100; i++) {
+                long start = System.currentTimeMillis();
+
+                String groupId = "f74ceca40fc6efaa5365216089578fb2d5431d8215a445b15b91f2f4adaf49fe";
+                GroupUtils.groupExists(groupId);
+
+
+                long elapsed = System.currentTimeMillis() - start;
+                System.out.println(elapsed + "ms");
+            }
+
+            return;
+        }
+
+
         L.info("Starting Kik Bot");
 
         L.info("Opening connection to database");

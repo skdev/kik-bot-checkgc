@@ -10,8 +10,12 @@ import java.util.Map;
 public abstract class Command<T extends Message, V extends Message> {
     public static final Map<String, Command> commands = new HashMap<>();
     static {
-        commands.put("Check Active", new CheckActiveCommand());
-        commands.put("Check Inactive", new CheckActiveCommand());
+        commands.put("check", new CheckActiveCommand());
+        commands.put("just active", new JustActiveCommand());
+        commands.put("Just Active", new JustActiveCommand());
+        commands.put("Just Inactive", new JustInactiveCommand());
+        commands.put("just inactive", new JustInactiveCommand());
+        commands.put("reset", new ResetCommand());
         commands.put("help", new HelpCommand());
 
         final InformationCommand info = new InformationCommand();

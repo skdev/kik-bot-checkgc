@@ -19,6 +19,9 @@ public class GroupMember {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "active")
+    private int active;
+
     public GroupMember() {}
 
     public long getId() {
@@ -43,5 +46,18 @@ public class GroupMember {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "[id=" + id + "][username=" + username + "][active=" + active + "]";
     }
 }
